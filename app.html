@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Velvet Pages Watch Atelier</title>
+<style>
+:root{
+  font-family:"Inter","Segoe UI",system-ui,-apple-system,sans-serif;
+  --dial-color:#0f62fe;
+  --accent-color:#ffffff;
+  --frame-color:#d0d7e3;
+  --band-color:#2b2115;
+  --stitch-color:#f0d7b4;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  background:radial-gradient(circle at top,#132044,#05070d);
+  color:#f8fafc;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  padding:1.5rem;
+}
+.app{
+  width:min(1200px,100%);
+  display:flex;
+  flex-direction:column;
+  gap:1.5rem;
+}
+header{
+  background:rgba(15,23,42,0.9);
+  border:1px solid rgba(59,130,246,0.25);
+  border-radius:1.25rem;
+  padding:1.5rem;
+  display:flex;
+  flex-wrap:wrap;
+  gap:1rem;
+  justify-content:space-between;
+  box-shadow:0 20px 60px rgba(0,0,0,0.35);
+}
+header h1{
+  margin:0;
+  font-size:1.85rem;
+  letter-spacing:0.02em;
+}
+header p{
+  margin:0.25rem 0 0;
+  color:#c7d2fe;
+}
+.badge{
+  padding:0.35rem 0.85rem;
+  border-radius:2rem;
+  background:rgba(59,130,246,0.12);
+  border:1px solid rgba(59,130,246,0.35);
+  font-size:0.9rem;
+  font-weight:600;
+}
+.contact{
+  display:flex;
+  flex-direction:column;
+  gap:0.35rem;
+  font-size:0.95rem;
+}
+main{
+  display:flex;
+  flex-direction:column;
+  gap:1.5rem;
+}
+.studio{
+  background:rgba(15,23,42,0.85);
+  border-radius:1.25rem;
+  border:1px solid rgba(59,130,246,0.18);
+  padding:1.25rem;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:1.25rem;
+}
+.controls{
+  background:rgba(15,23,42,0.55);
+  border-radius:1rem;
+  padding:1rem;
+  border:1px solid rgba(148,163,184,0.2);
+  display:flex;
+  flex-direction:column;
+  gap:1rem;
+}
+.control-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:0.85rem;
+}
+.field{
+  display:flex;
+  flex-direction:column;
+  gap:0.3rem;
+}
+.field label{
+  font-size:0.9rem;
+  color:#cbd5f5;
+}
+.field label span{
+  margin-right:0.25rem;
+}
+input,select,textarea{
+  background:rgba(15,23,42,0.7);
+  border:1px solid rgba(148,163,184,0.35);
+  border-radius:0.65rem;
+  padding:0.55rem 0.65rem;
+  color:#e2e8f0;
+  font-size:0.95rem;
+}
+input[type="color"]{
+  padding:0.2rem;
+  height:2.5rem;
+}
+textarea{
+  min-height:3.5rem;
+  resize:vertical;
+}
+.range-value{
+  font-size:0.85rem;
+  color:#94a3b8;
+}
+button{
+  border:none;
+  border-radius:0.85rem;
+  padding:0.9rem 1rem;
+  font-size:1rem;
+  font-weight:600;
+  cursor:pointer;
+  transition:transform 0.2s ease,box-shadow 0.2s ease;
+}
+button.primary{
+  background:linear-gradient(120deg,#2563eb,#7c3aed);
+  color:#f8fafc;
+  box-shadow:0 12px 25px rgba(37,99,235,0.35);
+}
+button.secondary{
+  background:rgba(148,163,184,0.2);
+  color:#e2e8f0;
+  border:1px solid rgba(148,163,184,0.35);
+}
+button:active{
+  transform:scale(0.98);
+}
+.button-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:0.75rem;
+}
+.preview{
+  display:flex;
+  flex-direction:column;
+  gap:1.25rem;
+}
+.model-panel{
+  background:linear-gradient(145deg,rgba(15,23,42,0.8),rgba(51,65,85,0.35));
+  border-radius:1.1rem;
+  border:1px solid rgba(59,130,246,0.2);
+  padding:1rem;
+  display:flex;
+  flex-direction:column;
+  gap:0.75rem;
+}
+.model-scene{
+  background:radial-gradient(circle at 30% 20%,rgba(59,130,246,0.35),rgba(15,23,42,0.9));
+  border-radius:1rem;
+  border:1px solid rgba(148,163,184,0.2);
+  padding:1.5rem;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:260px;
+  perspective:800px;
+}
+.watch3d{
+  position:relative;
+  width:210px;
+  height:320px;
+  transform-style:preserve-3d;
+  animation:float 8s ease-in-out infinite;
+}
+.watch3d::after{
+  content:"";
+  position:absolute;
+  width:160px;
+  height:25px;
+  background:radial-gradient(circle,rgba(0,0,0,0.55),transparent 70%);
+  bottom:-20px;
+  left:50%;
+  transform:translateX(-50%);
+  filter:blur(4px);
+}
+.strap{
+  position:absolute;
+  left:50%;
+  width:90px;
+  height:50%;
+  background:var(--band-color);
+  transform:translateX(-50%) rotateX(6deg);
+  border-radius:2rem;
+  border:2px solid rgba(0,0,0,0.25);
+  box-shadow:inset 0 0 25px rgba(0,0,0,0.35);
+}
+.strap.top{top:-45px;}
+.strap.bottom{bottom:-45px;}
+.case{
+  position:absolute;
+  top:50%;
+  left:50%;
+  width:200px;
+  height:200px;
+  border-radius:50%;
+  transform:translate(-50%,-50%) rotateX(7deg);
+  background:var(--frame-color);
+  box-shadow:0 20px 40px rgba(0,0,0,0.5), inset 0 12px 15px rgba(255,255,255,0.25), inset 0 -15px 25px rgba(0,0,0,0.35);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.dial{
+  width:76%;
+  height:76%;
+  border-radius:50%;
+  background:var(--dial-color);
+  position:relative;
+  box-shadow:inset 0 0 25px rgba(0,0,0,0.4);
+  overflow:hidden;
+}
+.dial::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  background:radial-gradient(circle at 30% 30%,rgba(255,255,255,0.35),transparent 60%);
+  mix-blend-mode:screen;
+  opacity:0.7;
+}
+.watch3d[data-texture="matte"] .dial{box-shadow:inset 0 0 12px rgba(0,0,0,0.45);}
+.watch3d[data-texture="sunburst"] .dial{
+  background-image:conic-gradient(from 0deg,var(--dial-color),#00000022,var(--dial-color) 70%);
+}
+.watch3d[data-texture="skeleton"] .dial{
+  background:
+    radial-gradient(circle,#00000066 20%,transparent 45%),
+    repeating-conic-gradient(from 0deg,rgba(255,255,255,0.15) 0deg,transparent 10deg 20deg);
+}
+.ticks{
+  position:absolute;
+  inset:8%;
+}
+.tick{
+  position:absolute;
+  top:0;
+  left:50%;
+  width:2px;
+  height:14%;
+  transform-origin:50% 360%;
+  transform:rotate(calc(var(--i)*30deg));
+}
+.tick::after{
+  content:"";
+  display:block;
+  width:100%;
+  height:100%;
+  background:var(--accent-color);
+  border-radius:1rem;
+}
+.watch3d[data-markers="dots"] .tick{
+  height:10%;
+}
+.watch3d[data-markers="dots"] .tick::after{
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  margin:0 auto;
+}
+.watch3d[data-markers="numerals"] .tick::after{
+  content:attr(data-num);
+  width:auto;
+  height:auto;
+  background:transparent;
+  font-size:0.85rem;
+  font-weight:600;
+  text-transform:none;
+  color:var(--accent-color);
+}
+.watch3d[data-markers="skeleton"] .tick::after{
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent);
+  height:60%;
+}
+.hands{
+  position:absolute;
+  inset:18%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.hand{
+  position:absolute;
+  bottom:50%;
+  transform-origin:50% 100%;
+  border-radius:1rem;
+  background:var(--accent-color);
+  box-shadow:0 0 10px rgba(255,255,255,0.4);
+}
+.hand.hour{
+  width:6px;
+  height:28%;
+  transform:rotate(-40deg);
+}
+.hand.minute{
+  width:4px;
+  height:38%;
+  transform:rotate(70deg);
+}
+.hand.second{
+  width:2px;
+  height:44%;
+  background:#ff6b6b;
+  transform:rotate(140deg);
+}
+.watch3d[data-hands="dauphine"] .hand.hour,
+.watch3d[data-hands="dauphine"] .hand.minute{
+  border-radius:0;
+  clip-path:polygon(50% 0,100% 100%,0 100%);
+}
+.watch3d[data-hands="lollipop"] .hand.second::after{
+  content:"";
+  position:absolute;
+  top:-8px;
+  left:50%;
+  transform:translateX(-50%);
+  width:12px;
+  height:12px;
+  border-radius:50%;
+  border:2px solid #ff6b6b;
+  background:transparent;
+}
+.engraving{
+  position:absolute;
+  bottom:18%;
+  width:100%;
+  text-align:center;
+  font-size:0.7rem;
+  letter-spacing:0.2em;
+  color:rgba(255,255,255,0.7);
+  text-transform:uppercase;
+}
+.watch3d[data-band="perforated"] .strap{
+  background-image:radial-gradient(circle at 8px 8px,rgba(0,0,0,0.5) 12%,transparent 13%);
+  background-size:16px 16px;
+}
+.watch3d[data-band="chevron"] .strap{
+  background-image:linear-gradient(135deg,rgba(0,0,0,0.35) 25%,transparent 25%,transparent 50%,rgba(0,0,0,0.35) 50%,rgba(0,0,0,0.35) 75%,transparent 75%,transparent 100%);
+  background-size:18px 18px;
+}
+.watch3d[data-band="quilted"] .strap{
+  background-image:linear-gradient(45deg,rgba(255,255,255,0.1) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.1) 50%,rgba(255,255,255,0.1) 75%,transparent 75%,transparent 100%),linear-gradient(-45deg,rgba(255,255,255,0.1) 25%,transparent 25%,transparent 50%,rgba(255,255,255,0.1) 50%,rgba(255,255,255,0.1) 75%,transparent 75%,transparent 100%);
+  background-size:22px 22px;
+}
+.watch3d.pulse{
+  animation:pulse 0.6s ease;
+}
+@keyframes float{
+  0%{transform:rotateX(12deg) rotateY(-12deg) translateY(0);}
+  50%{transform:rotateX(8deg) rotateY(-4deg) translateY(-10px);}
+  100%{transform:rotateX(12deg) rotateY(-12deg) translateY(0);}
+}
+@keyframes pulse{
+  0%{transform:scale(1);}
+  50%{transform:scale(1.03);}
+  100%{transform:scale(1);}
+}
+.canvases{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:1rem;
+}
+.canvas-card{
+  background:rgba(15,23,42,0.65);
+  border-radius:1rem;
+  border:1px solid rgba(148,163,184,0.25);
+  padding:1rem;
+  display:flex;
+  flex-direction:column;
+  gap:0.75rem;
+}
+canvas{
+  width:100%;
+  height:auto;
+  border-radius:0.85rem;
+  border:1px solid rgba(148,163,184,0.25);
+  background:#020617;
+}
+.summary-panel{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:1rem;
+}
+.summary-card{
+  background:rgba(15,23,42,0.8);
+  border-radius:1rem;
+  border:1px solid rgba(59,130,246,0.18);
+  padding:1rem;
+  display:flex;
+  flex-direction:column;
+  gap:0.35rem;
+}
+.summary-card h3{
+  margin:0;
+  font-size:1rem;
+  color:#bfdbfe;
+}
+.summary-card p{
+  margin:0;
+  color:#e2e8f0;
+  font-size:0.95rem;
+}
+.swatches{
+  display:flex;
+  gap:0.5rem;
+}
+.swatch{
+  width:26px;
+  height:26px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,0.4);
+}
+.workflow{
+  background:rgba(15,23,42,0.85);
+  border-radius:1.25rem;
+  border:1px solid rgba(99,102,241,0.25);
+  padding:1.25rem;
+}
+.workflow-steps{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:1rem;
+}
+.step{
+  padding:0.9rem;
+  border-radius:0.85rem;
+  background:rgba(79,70,229,0.18);
+  border:1px dashed rgba(129,140,248,0.45);
+}
+.step h4{
+  margin:0 0 0.35rem;
+  font-size:1rem;
+  color:#dbeafe;
+}
+.step p{
+  margin:0;
+  font-size:0.9rem;
+  color:#cbd5f5;
+}
+footer{
+  text-align:center;
+  font-size:0.9rem;
+  color:#cbd5f5;
+  padding-bottom:1rem;
+}
+footer a{
+  color:#93c5fd;
+  text-decoration:none;
+}
+@media (max-width:600px){
+  body{padding:1rem;}
+  header{flex-direction:column;}
+  .button-row{flex-direction:column;}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div>
+    <h1>Velvet Pages Watch Atelier</h1>
+    <p>Professional bespoke watch designer • Made by Velvet Pages • Founder: Mayukh Sarkar</p>
+  </div>
+  <div class="contact">
+    <span class="badge">📧 mayukhsarkar1319@gmail.com</span>
+    <span>Build signature dials, frames, bands & engravings in one fluent workspace.</span>
+  </div>
+</header>
+
+<main>
+  <section class="studio">
+    <div class="controls">
+      <h2>🎨 Design Console</h2>
+      <div class="control-grid">
+        <div class="field">
+          <label for="dialColor"><span>🟢</span>Dial Color</label>
+          <input type="color" id="dialColor" data-key="dialColor" value="#0f62fe">
+        </div>
+        <div class="field">
+          <label for="accentColor"><span>✨</span>Accent Color</label>
+          <input type="color" id="accentColor" data-key="accentColor" value="#ffffff">
+        </div>
+        <div class="field">
+          <label for="dialTexture"><span>🌀</span>Dial Texture</label>
+          <select id="dialTexture" data-key="dialTexture">
+            <option value="matte">Velvet Matte</option>
+            <option value="sunburst" selected>Sunburst Aura</option>
+            <option value="skeleton">Skeleton Window</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="markerStyle"><span>🧭</span>Markers</label>
+          <select id="markerStyle" data-key="markerStyle">
+            <option value="bars" selected>Minimal Bars</option>
+            <option value="numerals">Bold Numerals</option>
+            <option value="dots">Jewel Dots</option>
+            <option value="skeleton">Skeleton Indices</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="handStyle"><span>⏱️</span>Hands</label>
+          <select id="handStyle" data-key="handStyle">
+            <option value="sword" selected>Sword</option>
+            <option value="dauphine">Dauphine</option>
+            <option value="lollipop">Lollipop</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="frameFinish"><span>🛡️</span>Frame Finish</label>
+          <select id="frameFinish" data-key="frameFinish">
+            <option value="steel" selected>Polished Steel</option>
+            <option value="gunmetal">Brushed Gunmetal</option>
+            <option value="rosegold">Velvet Rose Gold</option>
+            <option value="ceramic">Ceramic Ivory</option>
+            <option value="midnight">Midnight DLC</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="frameThickness"><span>⚙️</span>Bezel Depth</label>
+          <input type="range" id="frameThickness" data-key="frameThickness" min="6" max="18" value="10">
+          <span class="range-value" id="thicknessValue">10 pt</span>
+        </div>
+        <div class="field">
+          <label for="bandMaterial"><span>🪢</span>Band Material</label>
+          <select id="bandMaterial" data-key="bandMaterial">
+            <option value="leather" selected>Italian Leather</option>
+            <option value="rubber">FKM Rubber</option>
+            <option value="mesh">Milanese Mesh</option>
+            <option value="fabric">Recycled Fabric</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="bandColor"><span>🎗️</span>Band Color</label>
+          <input type="color" id="bandColor" data-key="bandColor" value="#2b2115">
+        </div>
+        <div class="field">
+          <label for="bandPattern"><span>🔶</span>Band Pattern</label>
+          <select id="bandPattern" data-key="bandPattern">
+            <option value="smooth" selected>Smooth</option>
+            <option value="perforated">Perforated Rally</option>
+            <option value="chevron">Chevron Weave</option>
+            <option value="quilted">Quilted Stitch</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="stitchColor"><span>🪡</span>Stitch Color</label>
+          <input type="color" id="stitchColor" data-key="stitchColor" value="#f0d7b4">
+        </div>
+        <div class="field">
+          <label for="buckleFinish"><span>🔩</span>Buckle Finish</label>
+          <select id="buckleFinish" data-key="buckleFinish">
+            <option value="steel" selected>Steel</option>
+            <option value="gunmetal">Gunmetal</option>
+            <option value="rosegold">Rose Gold</option>
+            <option value="black">Obsidian</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label for="engravingText"><span>🖋️</span>Engraving</label>
+        <textarea id="engravingText" data-key="engravingText" maxlength="36" placeholder="Add your dedication">Velvet Pages Limited</textarea>
+      </div>
+      <div class="control-grid">
+        <div class="field">
+          <label for="engravingStyle"><span>📜</span>Engraving Style</label>
+          <select id="engravingStyle" data-key="engravingStyle">
+            <option value="block" selected>Block Serif</option>
+            <option value="script">Script Flourish</option>
+            <option value="mono">Mono Engrave</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="engravingPlacement"><span>🧾</span>Placement</label>
+          <select id="engravingPlacement" data-key="engravingPlacement">
+            <option value="arc" selected>Caseback Arc</option>
+            <option value="center">Caseback Center</option>
+            <option value="side">Frame Edge</option>
+          </select>
+        </div>
+      </div>
+      <div class="button-row">
+        <button class="primary" id="renderBtn">⚡ Craft 3D Model & Engraving</button>
+        <button class="secondary" id="downloadFront">⬇️ Download Front</button>
+        <button class="secondary" id="downloadBack">⬇️ Download Back</button>
+      </div>
+    </div>
+
+    <div class="preview">
+      <div class="model-panel">
+        <h2>🧱 Product Model & Engraving Preview</h2>
+        <div class="model-scene">
+          <div class="watch3d" id="watch3d" data-markers="bars" data-texture="sunburst" data-band="smooth" data-hands="sword">
+            <div class="strap top"></div>
+            <div class="strap bottom"></div>
+            <div class="case">
+              <div class="dial">
+                <div class="ticks">
+                  <span class="tick" style="--i:0" data-num="12"></span>
+                  <span class="tick" style="--i:1" data-num="1"></span>
+                  <span class="tick" style="--i:2" data-num="2"></span>
+                  <span class="tick" style="--i:3" data-num="3"></span>
+                  <span class="tick" style="--i:4" data-num="4"></span>
+                  <span class="tick" style="--i:5" data-num="5"></span>
+                  <span class="tick" style="--i:6" data-num="6"></span>
+                  <span class="tick" style="--i:7" data-num="7"></span>
+                  <span class="tick" style="--i:8" data-num="8"></span>
+                  <span class="tick" style="--i:9" data-num="9"></span>
+                  <span class="tick" style="--i:10" data-num="10"></span>
+                  <span class="tick" style="--i:11" data-num="11"></span>
+                </div>
+                <div class="hands">
+                  <span class="hand hour"></span>
+                  <span class="hand minute"></span>
+                  <span class="hand second"></span>
+                </div>
+                <div class="engraving" id="dialSignature">Velvet Pages</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p>Rotate-worthy sheen, band detailing, and engravings update instantly for both front and back layouts.</p>
+      </div>
+
+      <div class="canvases">
+        <div class="canvas-card">
+          <h3>Front Blueprint</h3>
+          <canvas id="frontCanvas" width="320" height="320"></canvas>
+        </div>
+        <div class="canvas-card">
+          <h3>Caseback & Engraving</h3>
+          <canvas id="backCanvas" width="320" height="320"></canvas>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="summary-panel">
+    <div class="summary-card">
+      <h3>Dial & Frame</h3>
+      <p id="summaryDial">Sunburst dial with Minimal Bars</p>
+      <p id="summaryFrame">Polished Steel frame • 10 pt bezel</p>
+      <div class="swatches">
+        <div class="swatch" id="dialSwatch" style="background:#0f62fe;"></div>
+        <div class="swatch" id="frameSwatch" style="background:#d0d7e3;"></div>
+      </div>
+    </div>
+    <div class="summary-card">
+      <h3>Band Suite</h3>
+      <p id="summaryBand">Italian Leather • Smooth finish</p>
+      <div class="swatches">
+        <div class="swatch" id="bandSwatch" style="background:#2b2115;"></div>
+        <div class="swatch" id="stitchSwatch" style="background:#f0d7b4;"></div>
+      </div>
+    </div>
+    <div class="summary-card">
+      <h3>Engraving</h3>
+      <p id="summaryEngraving">Block Serif on caseback arc</p>
+      <div class="swatches">
+        <div class="swatch" id="accentSwatch" style="background:#ffffff;"></div>
+      </div>
+    </div>
+    <div class="summary-card">
+      <h3>Velvet Pages Guarantee</h3>
+      <p>Download-ready renders, precision engraving maps, and presentation-ready model views crafted by Velvet Pages.</p>
+    </div>
+  </section>
+
+  <section class="workflow">
+    <h2>🔧 End-to-End Velvet Workflow</h2>
+    <div class="workflow-steps">
+      <div class="step">
+        <h4>1. Dial Lab</h4>
+        <p>Blend textures, markers, accents, and frame depth for the perfect face.</p>
+      </div>
+      <div class="step">
+        <h4>2. Band Atelier</h4>
+        <p>Leather, mesh, rubber, or fabric — stitch, pattern, and buckle your way.</p>
+      </div>
+      <div class="step">
+        <h4>3. Engraving Forge</h4>
+        <p>Choose script, block, or mono with arc, center, or edge placement.</p>
+      </div>
+      <div class="step">
+        <h4>4. 3D & Downloads</h4>
+        <p>Instant model plus high-res front/back exports for production.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  Velvet Pages • Founder: Mayukh Sarkar • Crafted with precision and imagination. Contact: <a href="mailto:mayukhsarkar1319@gmail.com">mayukhsarkar1319@gmail.com</a>
+</footer>
+</div>
+
+<script>
+const state={
+  dialColor:"#0f62fe",
+  accentColor:"#ffffff",
+  dialTexture:"sunburst",
+  markerStyle:"bars",
+  handStyle:"sword",
+  frameFinish:"steel",
+  frameThickness:10,
+  bandMaterial:"leather",
+  bandColor:"#2b2115",
+  bandPattern:"smooth",
+  stitchColor:"#f0d7b4",
+  buckleFinish:"steel",
+  engravingText:"Velvet Pages Limited",
+  engravingStyle:"block",
+  engravingPlacement:"arc"
+};
+const framePalettes={
+  steel:{label:"Polished Steel",color:"#d0d7e3"},
+  gunmetal:{label:"Brushed Gunmetal",color:"#4c545e"},
+  rosegold:{label:"Velvet Rose Gold",color:"#c17a62"},
+  ceramic:{label:"Ceramic Ivory",color:"#f5f5f2"},
+  midnight:{label:"Midnight DLC",color:"#0d1117"}
+};
+const bandMaterials={
+  leather:"Italian Leather",
+  rubber:"FKM Rubber",
+  mesh:"Milanese Mesh",
+  fabric:"Recycled Fabric"
+};
+const patternLabels={
+  smooth:"Smooth",
+  perforated:"Perforated Rally",
+  chevron:"Chevron Weave",
+  quilted:"Quilted Stitch"
+};
+const markerLabels={
+  bars:"Minimal Bars",
+  numerals:"Bold Numerals",
+  dots:"Jewel Dots",
+  skeleton:"Skeleton Indices"
+};
+const textureLabels={
+  matte:"Velvet Matte",
+  sunburst:"Sunburst Aura",
+  skeleton:"Skeleton Window"
+};
+const handLabels={
+  sword:"Sword",
+  dauphine:"Dauphine",
+  lollipop:"Lollipop"
+};
+const engravingStyleLabels={
+  block:"Block Serif",
+  script:"Script Flourish",
+  mono:"Mono Engrave"
+};
+const placementLabels={
+  arc:"Caseback Arc",
+  center:"Caseback Center",
+  side:"Frame Edge"
+};
+const engravingFonts={
+  block:'600 18px "Times New Roman"',
+  script:'italic 20px "Georgia"',
+  mono:'16px "Courier New"'
+};
+const docStyle=document.documentElement.style;
+const watch3D=document.getElementById("watch3d");
+const dialSignature=document.getElementById("dialSignature");
+const thicknessValue=document.getElementById("thicknessValue");
+const frontCanvas=document.getElementById("frontCanvas");
+const backCanvas=document.getElementById("backCanvas");
+const summaryDial=document.getElementById("summaryDial");
+const summaryFrame=document.getElementById("summaryFrame");
+const summaryBand=document.getElementById("summaryBand");
+theSummaryEng=document.getElementById?document.getElementById("summaryEngraving"):null;
+const dialSwatch=document.getElementById("dialSwatch");
+const frameSwatch=document.getElementById("frameSwatch");
+const bandSwatch=document.getElementById("bandSwatch");
+const stitchSwatch=document.getElementById("stitchSwatch");
+const accentSwatch=document.getElementById("accentSwatch");
+const renderBtn=document.getElementById("renderBtn");
+const downloadFront=document.getElementById("downloadFront");
+const downloadBack=document.getElementById("downloadBack");
+document.querySelectorAll("[data-key]").forEach(input=>{
+  input.addEventListener("input",e=>{
+    const key=e.target.dataset.key;
+    state[key]=e.target.type==="range"?Number(e.target.value):e.target.value;
+    if(key==="frameThickness"){thicknessValue.textContent=`${state.frameThickness} pt`;}
+    renderAll();
+  });
+});
+renderBtn.addEventListener("click",()=>{
+  watch3D.classList.add("pulse");
+  setTimeout(()=>watch3D.classList.remove("pulse"),600);
+  renderAll();
+});
+downloadFront.addEventListener("click",()=>downloadCanvas(frontCanvas,"VelvetPages_watch_front.png"));
+downloadBack.addEventListener("click",()=>downloadCanvas(backCanvas,"VelvetPages_watch_back.png"));
+function renderAll(){
+  updateCSSVars();
+  update3D();
+  updateSummary();
+  drawFront();
+  drawBack();
+}
+function updateCSSVars(){
+  docStyle.setProperty("--dial-color",state.dialColor);
+  docStyle.setProperty("--accent-color",state.accentColor);
+  docStyle.setProperty("--frame-color",framePalettes[state.frameFinish].color);
+  docStyle.setProperty("--band-color",state.bandColor);
+  docStyle.setProperty("--stitch-color",state.stitchColor);
+}
+function update3D(){
+  watch3D.dataset.markers=state.markerStyle;
+  watch3D.dataset.texture=state.dialTexture;
+  watch3D.dataset.band=state.bandPattern;
+  watch3D.dataset.hands=state.handStyle;
+  dialSignature.textContent=state.engravingText||"Velvet Pages";
+}
+function updateSummary(){
+  summaryDial.textContent=`${textureLabels[state.dialTexture]} dial • ${markerLabels[state.markerStyle]} markers • ${handLabels[state.handStyle]} hands`;
+  summaryFrame.textContent=`${framePalettes[state.frameFinish].label} frame • ${state.frameThickness} pt bezel`;
+  summaryBand.textContent=`${bandMaterials[state.bandMaterial]} strap • ${patternLabels[state.bandPattern]} • ${state.buckleFinish} buckle`;
+  if(theSummaryEng){
+    theSummaryEng.textContent=`${engravingStyleLabels[state.engravingStyle]} on ${placementLabels[state.engravingPlacement]}`;
+  }
+  dialSwatch.style.background=state.dialColor;
+  frameSwatch.style.background=framePalettes[state.frameFinish].color;
+  bandSwatch.style.background=state.bandColor;
+  stitchSwatch.style.background=state.stitchColor;
+  accentSwatch.style.background=state.accentColor;
+}
+function drawFront(){
+  const ctx=frontCanvas.getContext("2d");
+  const w=frontCanvas.width;
+  const h=frontCanvas.height;
+  ctx.clearRect(0,0,w,h);
+  const bg=ctx.createLinearGradient(0,0,w,h);
+  bg.addColorStop(0,"#05080f");
+  bg.addColorStop(1,"#0f172a");
+  ctx.fillStyle=bg;
+  ctx.fillRect(0,0,w,h);
+  const strapWidth=120;
+  drawStrap(ctx,w,h,strapWidth);
+  const center=w/2;
+  const caseRadius=110;
+  const dialRadius=caseRadius-state.frameThickness;
+  drawCase(ctx,center,center,caseRadius);
+  drawDial(ctx,center,center,dialRadius);
+  drawMarkers(ctx,center,center,dialRadius);
+  drawHands(ctx,center,center,dialRadius);
+  drawLogo(ctx,center,center,dialRadius);
+}
+function drawBack(){
+  const ctx=backCanvas.getContext("2d");
+  const w=backCanvas.width;
+  const h=backCanvas.height;
+  ctx.clearRect(0,0,w,h);
+  const bg=ctx.createLinearGradient(w,0,0,h);
+  bg.addColorStop(0,"#060b12");
+  bg.addColorStop(1,"#0e1424");
+  ctx.fillStyle=bg;
+  ctx.fillRect(0,0,w,h);
+  const strapWidth=120;
+  drawStrap(ctx,w,h,strapWidth);
+  const center=w/2;
+  const caseRadius=110;
+  const color=framePalettes[state.frameFinish].color;
+  const gradient=ctx.createRadialGradient(center-15,center-25,20,center,center,caseRadius);
+  gradient.addColorStop(0,shiftColor(color,30));
+  gradient.addColorStop(0.7,color);
+  gradient.addColorStop(1,shiftColor(color,-30));
+  ctx.fillStyle=gradient;
+  ctx.beginPath();
+  ctx.arc(center,center,caseRadius,0,Math.PI*2);
+  ctx.fill();
+  ctx.fillStyle=shiftColor(color,-25);
+  ctx.beginPath();
+  ctx.arc(center,center,caseRadius-12,0,Math.PI*2);
+  ctx.fill();
+  ctx.fillStyle="#1f2937";
+  ctx.beginPath();
+  ctx.arc(center,center,caseRadius-26,0,Math.PI*2);
+  ctx.fill();
+  drawScrews(ctx,center,caseRadius-22);
+  drawEngraving(ctx,center,caseRadius-38);
+}
+function drawStrap(ctx,w,h,strapWidth){
+  const x=w/2-strapWidth/2;
+  const grad=ctx.createLinearGradient(x,0,x+strapWidth,0);
+  grad.addColorStop(0,shiftColor(state.bandColor,-25));
+  grad.addColorStop(0.5,state.bandColor);
+  grad.addColorStop(1,shiftColor(state.bandColor,25));
+  ctx.fillStyle=grad;
+  ctx.fillRect(x,0,strapWidth,h);
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(x,0,strapWidth,h);
+  ctx.clip();
+  ctx.globalAlpha=0.35;
+  ctx.strokeStyle=shiftColor(state.bandColor,-40);
+  if(state.bandPattern==="perforated"){
+    for(let y=20;y<h;y+=30){
+      for(let col=x+20;col<x+strapWidth-20;col+=30){
+        ctx.beginPath();
+        ctx.arc(col,y,4,0,Math.PI*2);
+        ctx.stroke();
+      }
+    }
+  }else if(state.bandPattern==="chevron"){
+    for(let y=-strapWidth;y<h+strapWidth;y+=18){
+      ctx.beginPath();
+      ctx.moveTo(x,y);
+      ctx.lineTo(x+strapWidth/2,y+18);
+      ctx.lineTo(x+strapWidth,y);
+      ctx.stroke();
+    }
+  }else if(state.bandPattern==="quilted"){
+    for(let y=0;y<h;y+=18){
+      ctx.beginPath();
+      ctx.moveTo(x,y);
+      ctx.lineTo(x+strapWidth,y+18);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(x+strapWidth,y);
+      ctx.lineTo(x,y+18);
+      ctx.stroke();
+    }
+  }
+  ctx.restore();
+  ctx.strokeStyle=state.stitchColor;
+  ctx.lineWidth=2;
+  ctx.setLineDash([8,6]);
+  ctx.beginPath();
+  ctx.moveTo(x+12,0);
+  ctx.lineTo(x+12,h);
+  ctx.moveTo(x+strapWidth-12,0);
+  ctx.lineTo(x+strapWidth-12,h);
+  ctx.stroke();
+  ctx.setLineDash([]);
+}
+function drawCase(ctx,cx,cy,radius){
+  const color=framePalettes[state.frameFinish].color;
+  const grad=ctx.createRadialGradient(cx-10,cy-20,radius*0.2,cx,cy,radius);
+  grad.addColorStop(0,shiftColor(color,25));
+  grad.addColorStop(0.7,color);
+  grad.addColorStop(1,shiftColor(color,-20));
+  ctx.fillStyle=grad;
+  ctx.beginPath();
+  ctx.arc(cx,cy,radius,0,Math.PI*2);
+  ctx.fill();
+  ctx.lineWidth=state.frameThickness/2;
+  ctx.strokeStyle=shiftColor(color,-45);
+  ctx.stroke();
+}
+function drawDial(ctx,cx,cy,radius){
+  ctx.save();
+  const texture=state.dialTexture;
+  let fillStyle=state.dialColor;
+  if(texture==="sunburst"){
+    const grad=ctx.createRadialGradient(cx,cy,radius*0.05,cx,cy,radius);
+    grad.addColorStop(0,shiftColor(state.dialColor,35));
+    grad.addColorStop(0.4,state.dialColor);
+    grad.addColorStop(1,shiftColor(state.dialColor,-35));
+    fillStyle=grad;
+  }
+  ctx.fillStyle=fillStyle;
+  ctx.beginPath();
+  ctx.arc(cx,cy,radius,0,Math.PI*2);
+  ctx.fill();
+  if(texture==="skeleton"){
+    ctx.strokeStyle="rgba(0,0,0,0.4)";
+    ctx.lineWidth=6;
+    ctx.setLineDash([8,8]);
+    ctx.beginPath();
+    ctx.arc(cx,cy,radius*0.65,0,Math.PI*2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+  ctx.restore();
+}
+function drawMarkers(ctx,cx,cy,radius){
+  const style=state.markerStyle;
+  ctx.fillStyle=state.accentColor;
+  ctx.strokeStyle=state.accentColor;
+  ctx.textAlign="center";
+  ctx.textBaseline="middle";
+  ctx.font='600 16px "Inter"';
+  for(let i=0;i<12;i++){
+    const angle=(Math.PI/6)*i-Math.PI/2;
+    const outer=radius-6;
+    const inner=outer-(style==="bars"?14:style==="skeleton"?24:10);
+    const xOuter=cx+Math.cos(angle)*outer;
+    const yOuter=cy+Math.sin(angle)*outer;
+    const xInner=cx+Math.cos(angle)*inner;
+    const yInner=cy+Math.sin(angle)*inner;
+    if(style==="bars"||style==="skeleton"){
+      ctx.lineWidth=style==="skeleton"?3:4;
+      ctx.beginPath();
+      ctx.moveTo(xInner,yInner);
+      ctx.lineTo(xOuter,yOuter);
+      ctx.stroke();
+    }else if(style==="dots"){
+      ctx.beginPath();
+      ctx.arc(xOuter,yOuter,4,0,Math.PI*2);
+      ctx.fill();
+    }else if(style==="numerals"){
+      const numeral=i===0?12:i;
+      ctx.fillText(numeral,xInner,yInner);
+    }
+  }
+}
+function drawHands(ctx,cx,cy,radius){
+  const styles={
+    sword:{hourWidth:6,minuteWidth:4},
+    dauphine:{hourWidth:8,minuteWidth:5},
+    lollipop:{hourWidth:6,minuteWidth:4}
+  };
+  const style=styles[state.handStyle];
+  const hourAngle=-Math.PI/3;
+  const minuteAngle=Math.PI/6;
+  const secondAngle=Math.PI/2;
+  ctx.lineCap="round";
+  ctx.strokeStyle=state.accentColor;
+  ctx.lineWidth=style.hourWidth;
+  ctx.beginPath();
+  ctx.moveTo(cx,cy);
+  ctx.lineTo(cx+Math.cos(hourAngle)*radius*0.45,cy+Math.sin(hourAngle)*radius*0.45);
+  ctx.stroke();
+  ctx.lineWidth=style.minuteWidth;
+  ctx.beginPath();
+  ctx.moveTo(cx,cy);
+  ctx.lineTo(cx+Math.cos(minuteAngle)*radius*0.65,cy+Math.sin(minuteAngle)*radius*0.65);
+  ctx.stroke();
+  ctx.strokeStyle="#ff6b6b";
+  ctx.lineWidth=2;
+  ctx.beginPath();
+  ctx.moveTo(cx,cy);
+  ctx.lineTo(cx+Math.cos(secondAngle)*radius*0.75,cy+Math.sin(secondAngle)*radius*0.75);
+  ctx.stroke();
+  if(state.handStyle==="lollipop"){
+    ctx.fillStyle="#ff6b6b";
+    ctx.beginPath();
+    ctx.arc(cx+Math.cos(secondAngle)*radius*0.6,cy+Math.sin(secondAngle)*radius*0.6,6,0,Math.PI*2);
+    ctx.fill();
+  }
+  ctx.fillStyle=state.accentColor;
+  ctx.beginPath();
+  ctx.arc(cx,cy,6,0,Math.PI*2);
+  ctx.fill();
+}
+function drawLogo(ctx,cx,cy,radius){
+  ctx.fillStyle=state.accentColor;
+  ctx.font='600 14px "Inter"';
+  ctx.textAlign="center";
+  ctx.fillText("Velvet Pages",cx,cy+radius*0.5);
+}
+function drawScrews(ctx,center,radius){
+  ctx.fillStyle="#111827";
+  for(let i=0;i<6;i++){
+    const angle=(Math.PI/3)*i;
+    const x=center+Math.cos(angle)*radius;
+    const y=center+Math.sin(angle)*radius;
+    ctx.beginPath();
+    ctx.arc(x,y,6,0,Math.PI*2);
+    ctx.fill();
+    ctx.strokeStyle="#475569";
+    ctx.lineWidth=2;
+    ctx.beginPath();
+    ctx.moveTo(x-4,y-0);
+    ctx.lineTo(x+4,y);
+    ctx.stroke();
+  }
+}
+function drawEngraving(ctx,center,radius){
+  const text=(state.engravingText||"Velvet Pages").toUpperCase();
+  ctx.fillStyle="#e2e8f0";
+  ctx.textAlign="center";
+  ctx.textBaseline="middle";
+  ctx.font=engravingFonts[state.engravingStyle];
+  if(state.engravingPlacement==="center"){
+    ctx.fillText(text,center,center);
+  }else if(state.engravingPlacement==="side"){
+    ctx.save();
+    ctx.translate(center+radius+20,center);
+    ctx.rotate(Math.PI/2);
+    ctx.fillText(text,0,0);
+    ctx.restore();
+  }else{
+    ctx.save();
+    ctx.translate(center,center);
+    const chars=text.split("");
+    const start=Math.PI*0.15;
+    const end=Math.PI*0.85;
+    const arc=(end-start)/(Math.max(chars.length-1,1));
+    for(let i=0;i<chars.length;i++){
+      const angle=start+arc*i;
+      const x=Math.cos(angle)*radius;
+      const y=Math.sin(angle)*radius;
+      ctx.save();
+      ctx.translate(x,y);
+      ctx.rotate(angle+Math.PI/2);
+      ctx.fillText(chars[i],0,0);
+      ctx.restore();
+    }
+    ctx.restore();
+  }
+}
+function shiftColor(hex,percent){
+  const {r,g,b}=hexToRgb(hex);
+  const f=percent/100;
+  const transform=(c)=>{
+    if(percent>0){
+      return Math.round(Math.min(255,c+(255-c)*f));
+    }
+    return Math.round(Math.max(0,c+c*f));
+  };
+  return `rgb(${transform(r)},${transform(g)},${transform(b)})`;
+}
+function hexToRgb(hex){
+  let h=hex.replace("#","");
+  if(h.length===3){
+    h=h.split("").map(c=>c+c).join("");
+  }
+  const num=parseInt(h,16);
+  return{r:(num>>16)&255,g:(num>>8)&255,b:num&255};
+}
+function downloadCanvas(canvas,filename){
+  const link=document.createElement("a");
+  link.href=canvas.toDataURL("image/png");
+  link.download=filename;
+  link.click();
+}
+renderAll();
+</script>
+</body>
+</html>
